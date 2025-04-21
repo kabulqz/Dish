@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    private View homeButton, searchButton, addNewRecipeButton, profileButton;
+    int[][] containerAndIndicatorIds = {
+            {R.id.homeButton, R.id.homeIndicator},
+            {R.id.searchButton, R.id.searchIndicator},
+            {R.id.addNewRecipeButton, R.id.addNewRecipeIndicator},
+            {R.id.profileButton, R.id.profileIndicator}
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +28,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        int[][] containerAndIndicatorIds = {
-                {R.id.homeButton, R.id.homeIndicator},
-                {R.id.searchButton, R.id.searchIndicator},
-                {R.id.addNewRecipeButton, R.id.addNewRecipeIndicator},
-                {R.id.profileButton, R.id.profileIndicator}
-        };
+        View navigationBar = findViewById(R.id.navigationBar);
 
         for(int[] ids : containerAndIndicatorIds)
         {
@@ -35,6 +36,36 @@ public class MainActivity extends AppCompatActivity {
             View indicator = findViewById(ids[1]);
 
             button .setOnClickListener(view -> {
+
+                button.animate()
+                        .alpha(0.7f)
+                        .scaleX(1.1f)
+                        .scaleY(1.1f)
+                        .setDuration(250)
+                        .withEndAction(() -> {
+                            button.animate()
+                                    .alpha(1.0f)
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(250)
+                                    .start();
+                        })
+                        .start();
+
+                navigationBar.animate()
+                        .scaleX(1.025f)
+                        .scaleY(1.025f)
+                        .setDuration(200)
+                        .setInterpolator(new OvershootInterpolator())
+                        .withEndAction(() -> {
+                            navigationBar.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(200)
+                                    .start();
+                        })
+                        .start();
+
                 for(int[] otherIds : containerAndIndicatorIds) {
                     View otherButton = findViewById(otherIds[0]);
                     View otherIndicator = findViewById(otherIds[1]);
@@ -51,31 +82,17 @@ public class MainActivity extends AppCompatActivity {
                         otherIndicator.animate()
                                 .alpha(1f)
                                 .translationY(0f)
-                                .setDuration(300)
+                                .setDuration(450)
                                 .start();
                     } else {
                         otherIndicator.animate()
                                 .alpha(0f)
                                 .translationY(10f)
-                                .setDuration(200)
+                                .setDuration(450)
                                 .withEndAction(() -> otherIndicator.setVisibility(View.GONE))
                                 .start();
                     }
                 }
-
-                button.animate()
-                        .scaleX(1.1f)
-                        .scaleY(1.1f)
-                        .setDuration(200)
-                        .withEndAction(() -> {
-                            button.animate()
-                                    .scaleX(1f)
-                                    .scaleY(1f)
-                                    .setDuration(200)
-                                    .start();
-                        })
-                        .start();
-
             });
         }
     }
