@@ -22,29 +22,59 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        View homeButton = findViewById(R.id.homeButton);
-        View searchButton = findViewById(R.id.searchButton);
-        View addNewRecipeButton = findViewById(R.id.addNewRecipeButton);
-        View profileButton = findViewById(R.id.profileButton);
+        int[][] containerAndIndicatorIds = {
+                {R.id.homeButton, R.id.homeIndicator},
+                {R.id.searchButton, R.id.searchIndicator},
+                {R.id.addNewRecipeButton, R.id.addNewRecipeIndicator},
+                {R.id.profileButton, R.id.profileIndicator}
+        };
 
-        View[] buttons;
-        buttons = new View[]{homeButton, searchButton, addNewRecipeButton, profileButton};
-        for(View button : buttons) {
-            button.setOnClickListener(view ->{
-                for(View other : buttons) {
-                    int color = (other == view) ? Color.parseColor("#000000") : Color.parseColor("#343A40");
-                    other.setBackgroundTintList(ColorStateList.valueOf(color));
+        for(int[] ids : containerAndIndicatorIds)
+        {
+            View button = findViewById(ids[0]);
+            View indicator = findViewById(ids[1]);
+
+            button .setOnClickListener(view -> {
+                for(int[] otherIds : containerAndIndicatorIds) {
+                    View otherButton = findViewById(otherIds[0]);
+                    View otherIndicator = findViewById(otherIds[1]);
+
+                    boolean isActive = (otherButton == view);
+                    int color = isActive ? Color.parseColor("#000000") : Color.parseColor("#343A40");
+                    otherButton.setBackgroundTintList(ColorStateList.valueOf(color));
+                    otherIndicator.setVisibility(isActive ? View.VISIBLE : View.GONE);
+
+                    if (isActive) {
+                        otherIndicator.setVisibility(View.VISIBLE);
+                        otherIndicator.setAlpha(0f);
+                        otherIndicator.setTranslationY(10f);
+                        otherIndicator.animate()
+                                .alpha(1f)
+                                .translationY(0f)
+                                .setDuration(300)
+                                .start();
+                    } else {
+                        otherIndicator.animate()
+                                .alpha(0f)
+                                .translationY(10f)
+                                .setDuration(200)
+                                .withEndAction(() -> otherIndicator.setVisibility(View.GONE))
+                                .start();
+                    }
                 }
 
-                if(view.getId() == R.id.homeButton) {
-                    Toast.makeText(this, "Home Button Clicked", Toast.LENGTH_SHORT).show();
-                } else if(view.getId() == R.id.searchButton) {
-                    Toast.makeText(this, "Search Button Clicked", Toast.LENGTH_SHORT).show();
-                } else if(view.getId() == R.id.addNewRecipeButton) {
-                    Toast.makeText(this, "Add New Recipe Button Clicked", Toast.LENGTH_SHORT).show();
-                } else if(view.getId() == R.id.profileButton) {
-                    Toast.makeText(this, "Profile Button Clicked", Toast.LENGTH_SHORT).show();
-                }
+                button.animate()
+                        .scaleX(1.1f)
+                        .scaleY(1.1f)
+                        .setDuration(200)
+                        .withEndAction(() -> {
+                            button.animate()
+                                    .scaleX(1f)
+                                    .scaleY(1f)
+                                    .setDuration(200)
+                                    .start();
+                        })
+                        .start();
 
             });
         }

@@ -42,53 +42,125 @@
             tools:layout_editor_absoluteX="91dp"
             tools:layout_editor_absoluteY="0dp">
 
-            <View
-                android:id="@+id/homeButton"
+            <LinearLayout
+                android:id="@+id/homeButtonContainer"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/icon_home"
-                android:backgroundTint="#000000"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/homeButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/icon_home"
+                    android:backgroundTint="#000000"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="3dp" />
+
+                <View
+                    android:id="@+id/homeIndicator"
+                    android:layout_width="48dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/icon_indicator"
+                    android:visibility="visible" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="40dp"
                 android:layout_height="0dp" />
 
-            <View
-                android:id="@+id/searchButton"
+            <LinearLayout
+                android:id="@+id/searchButtonContainer"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/icon_search"
-                android:backgroundTint="#343A40"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/searchButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/icon_search"
+                    android:backgroundTint="#343A40"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="3dp" />
+
+                <View
+                    android:id="@+id/searchIndicator"
+                    android:layout_width="48dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/icon_indicator"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="40dp"
                 android:layout_height="0dp" />
 
-            <View
-                android:id="@+id/addNewRecipeButton"
+            <LinearLayout
+                android:id="@+id/addNewRecipeButtonContainer"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/icon_plus_square"
-                android:backgroundTint="#343A40"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/addNewRecipeButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/icon_plus_square"
+                    android:backgroundTint="#343A40"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="3dp" />
+
+                <View
+                    android:id="@+id/addNewRecipeIndicator"
+                    android:layout_width="48dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/icon_indicator"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <Space
                 android:layout_width="40dp"
                 android:layout_height="0dp" />
 
-            <View
-                android:id="@+id/profileButton"
+            <LinearLayout
+                android:id="@+id/profileButtonContainer"
                 android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/icon_user"
-                android:backgroundTint="#343A40"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:id="@+id/profileButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/icon_user"
+                    android:backgroundTint="#343A40"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_marginBottom="3dp" />
+
+                <View
+                    android:id="@+id/profileIndicator"
+                    android:layout_width="48dp"
+                    android:layout_height="10dp"
+                    android:background="@drawable/icon_indicator"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
