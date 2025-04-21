@@ -15,4 +15,74 @@
         android:src="@drawable/background_gradient"
         android:scaleType="centerCrop" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:background="@drawable/navigation_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_marginBottom="16dp" >
+
+        <LinearLayout
+            android:id="@+id/navigationBarContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:weightSum="4"
+            android:layout_gravity="center">
+
+            <View
+                android:id="@+id/homeButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="#0B0B0B"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <Space
+                android:layout_width="40dp"
+                android:layout_height="0dp" />
+
+            <View
+                android:id="@+id/searchButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="#0B0B0B"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <Space
+                android:layout_width="40dp"
+                android:layout_height="0dp" />
+
+            <View
+                android:id="@+id/addNewRecipeButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="#0B0B0B"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <Space
+                android:layout_width="40dp"
+                android:layout_height="0dp" />
+
+            <View
+                android:id="@+id/profileButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="#0B0B0B"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
