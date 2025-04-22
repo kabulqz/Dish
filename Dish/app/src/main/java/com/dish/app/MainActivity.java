@@ -1,13 +1,20 @@
 package com.dish.app;
 
+import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -29,6 +36,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         View navigationBar = findViewById(R.id.navigationBar);
+
+        LayoutTransition transition = new LayoutTransition();
+        transition.enableTransitionType(LayoutTransition.CHANGING);
+
+        LinearLayout homeButtonContainer = findViewById(R.id.homeButtonContainer);
+        homeButtonContainer.setLayoutTransition(transition);
+        LinearLayout searchButtonContainer = findViewById(R.id.searchButtonContainer);
+        searchButtonContainer.setLayoutTransition(transition);
+        LinearLayout addNewRecipeButtonContainer = findViewById(R.id.addNewRecipeButtonContainer);
+        addNewRecipeButtonContainer.setLayoutTransition(transition);
+        LinearLayout profileButtonContainer = findViewById(R.id.profileButtonContainer);
+        profileButtonContainer.setLayoutTransition(transition);
 
         for(int[] ids : containerAndIndicatorIds)
         {
@@ -73,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
                     boolean isActive = (otherButton == view);
                     int color = isActive ? Color.parseColor("#000000") : Color.parseColor("#343A40");
                     otherButton.setBackgroundTintList(ColorStateList.valueOf(color));
-                    otherIndicator.setVisibility(isActive ? View.VISIBLE : View.GONE);
 
                     if (isActive) {
                         otherIndicator.setVisibility(View.VISIBLE);
@@ -83,13 +101,19 @@ public class MainActivity extends AppCompatActivity {
                                 .alpha(1f)
                                 .translationY(0f)
                                 .setDuration(450)
+                                .setInterpolator(new DecelerateInterpolator())
                                 .start();
                     } else {
                         otherIndicator.animate()
                                 .alpha(0f)
                                 .translationY(10f)
-                                .setDuration(450)
-                                .withEndAction(() -> otherIndicator.setVisibility(View.GONE))
+                                .setDuration(250)
+                                .setInterpolator(new AccelerateInterpolator())
+                                .withEndAction(() -> {
+                                    otherIndicator.setVisibility(View.GONE);
+                                    otherIndicator.setAlpha(0f);
+                                    otherIndicator.setTranslationY(1000f); // move indicator out of device bounds
+                                })
                                 .start();
                     }
                 }
