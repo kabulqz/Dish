@@ -13,9 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/background_gradient"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:src="@drawable/background_gradient" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigationBar"
@@ -26,8 +24,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.9"
-        android:layout_marginBottom="16dp" >
+        app:layout_constraintWidth_percent="0.95"
+        android:layout_marginBottom="15dp" >
 
         <LinearLayout
             android:id="@+id/navigationBarContent"
@@ -39,8 +37,8 @@
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:weightSum="4"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="0dp">
 
             <LinearLayout
                 android:id="@+id/homeButtonContainer"
@@ -54,11 +52,11 @@
                     android:id="@+id/homeButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_marginBottom="3dp"
                     android:background="@drawable/icon_home"
                     android:backgroundTint="#000000"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="3dp" />
+                    android:focusable="true" />
 
                 <View
                     android:id="@+id/homeIndicator"
@@ -85,11 +83,11 @@
                     android:id="@+id/searchButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_marginBottom="3dp"
                     android:background="@drawable/icon_search"
                     android:backgroundTint="#343A40"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="3dp" />
+                    android:focusable="true" />
 
                 <View
                     android:id="@+id/searchIndicator"
@@ -116,11 +114,11 @@
                     android:id="@+id/addNewRecipeButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_marginBottom="3dp"
                     android:background="@drawable/icon_plus_square"
                     android:backgroundTint="#343A40"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="3dp" />
+                    android:focusable="true" />
 
                 <View
                     android:id="@+id/addNewRecipeIndicator"
@@ -147,11 +145,11 @@
                     android:id="@+id/profileButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
+                    android:layout_marginBottom="3dp"
                     android:background="@drawable/icon_user"
                     android:backgroundTint="#343A40"
                     android:clickable="true"
-                    android:focusable="true"
-                    android:layout_marginBottom="3dp" />
+                    android:focusable="true" />
 
                 <View
                     android:id="@+id/profileIndicator"

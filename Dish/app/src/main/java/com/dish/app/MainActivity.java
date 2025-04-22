@@ -4,12 +4,14 @@ import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,11 +38,24 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        setNavButtons();
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationBar), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            params.bottomMargin = systemBars.bottom + 15;
+            view.setLayoutParams(params);
+
+            return insets;
+        });
+    }
+
+    private void setNavButtons() {
         View navigationBar = findViewById(R.id.navigationBar);
 
         LayoutTransition transition = new LayoutTransition();
         transition.enableTransitionType(LayoutTransition.CHANGING);
-
         LinearLayout homeButtonContainer = findViewById(R.id.homeButtonContainer);
         homeButtonContainer.setLayoutTransition(transition);
         LinearLayout searchButtonContainer = findViewById(R.id.searchButtonContainer);
@@ -52,15 +68,13 @@ public class MainActivity extends AppCompatActivity {
         for(int[] ids : containerAndIndicatorIds)
         {
             View button = findViewById(ids[0]);
-            View indicator = findViewById(ids[1]);
 
             button .setOnClickListener(view -> {
-
                 button.animate()
-                        .alpha(0.7f)
+                        .alpha(0.6f)
                         .scaleX(1.1f)
                         .scaleY(1.1f)
-                        .setDuration(250)
+                        .setDuration(300)
                         .withEndAction(() -> {
                             button.animate()
                                     .alpha(1.0f)
@@ -74,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 navigationBar.animate()
                         .scaleX(1.025f)
                         .scaleY(1.025f)
-                        .setDuration(200)
+                        .setDuration(250)
                         .setInterpolator(new OvershootInterpolator())
                         .withEndAction(() -> {
                             navigationBar.animate()
@@ -94,21 +108,21 @@ public class MainActivity extends AppCompatActivity {
                     otherButton.setBackgroundTintList(ColorStateList.valueOf(color));
 
                     if (isActive) {
-                        otherIndicator.setVisibility(View.VISIBLE);
                         otherIndicator.setAlpha(0f);
                         otherIndicator.setTranslationY(10f);
+                        otherIndicator.setVisibility(View.VISIBLE);
                         otherIndicator.animate()
                                 .alpha(1f)
                                 .translationY(0f)
-                                .setDuration(450)
-                                .setInterpolator(new DecelerateInterpolator())
+                                .setDuration(400)
+                                .setInterpolator(new AccelerateInterpolator())
                                 .start();
                     } else {
                         otherIndicator.animate()
                                 .alpha(0f)
                                 .translationY(10f)
                                 .setDuration(250)
-                                .setInterpolator(new AccelerateInterpolator())
+                                .setInterpolator(new DecelerateInterpolator())
                                 .withEndAction(() -> {
                                     otherIndicator.setVisibility(View.GONE);
                                     otherIndicator.setAlpha(0f);
