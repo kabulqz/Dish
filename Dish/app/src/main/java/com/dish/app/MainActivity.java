@@ -4,7 +4,10 @@ import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 
@@ -40,12 +43,18 @@ public class MainActivity extends AppCompatActivity {
 
         setNavButtons();
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationBar), (view, insets) -> {
+        applyVerticalInsets(findViewById(R.id.backgroundSpace), 15);
+        applyVerticalInsets(findViewById(R.id.navigationBar), 15);
+    }
+
+    private void applyVerticalInsets(View view, int extraMarginDp) {
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            params.bottomMargin = systemBars.bottom + 15;
-            view.setLayoutParams(params);
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            params.topMargin = systemBars.top + extraMarginDp;
+            params.bottomMargin = systemBars.bottom + extraMarginDp;
+            v.setLayoutParams(params);
 
             return insets;
         });
