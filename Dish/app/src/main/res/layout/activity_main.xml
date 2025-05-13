@@ -15,7 +15,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/background_gradient" />
 
-    <View
+    <ScrollView
         android:id="@+id/backgroundSpace"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -25,12 +25,136 @@
         android:layout_marginBottom="15dp"
         android:background="@drawable/background_space_rect"
         android:elevation="1dp"
+        android:scrollbars="none"
+        android:fadingEdge="none"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.95"
-        />
+        app:layout_constraintWidth_percent="0.95">
+
+        <!-- Zawartość do przewijania -->
+        <LinearLayout
+            android:id="@+id/scrollableContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 1"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 2"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 3"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 4"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 5"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Przykładowy tekst 6"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 7"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 8"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 9"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 10"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 11"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 12"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 13"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 14"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 15"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Przykładowy tekst 16"
+                android:textSize="30sp"
+                android:padding="8dp"/>
+
+        </LinearLayout>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/navigationBar"
