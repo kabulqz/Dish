@@ -13,6 +13,7 @@ import androidx.activity.EdgeToEdge;
 
 import android.os.Handler;
 import android.os.Looper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -20,6 +21,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -43,8 +45,32 @@ public class MainActivity extends AppCompatActivity {
 
         setNavButtons();
 
-        applyVerticalInsets(findViewById(R.id.backgroundSpace), 15);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.backgroundSpace), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            params.topMargin = systemBars.top + 15;
+            v.setLayoutParams(params);
+
+            return insets;
+        });
         applyVerticalInsets(findViewById(R.id.navigationBar), 15);
+
+        LinearLayout scrollableContainer = findViewById(R.id.scrollableContent);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (int i = 0; i < 5; i++) {
+            View postView = inflater.inflate(R.layout.post_item, scrollableContainer, false);
+
+            TextView title = postView.findViewById(R.id.postRecipeTitle);
+            TextView username = postView.findViewById(R.id.postUsername);
+            TextView time = postView.findViewById(R.id.postTime);
+
+            title.setText("Makaron Carbonara " + (i + 1));
+            username.setText("User " + (i + 1));
+            time.setText((i + 1) + " hours ago");
+
+            scrollableContainer.addView(postView);
+        }
     }
 
     private void applyVerticalInsets(View view, int extraMarginDp) {
