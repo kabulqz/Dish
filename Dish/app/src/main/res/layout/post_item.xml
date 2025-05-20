@@ -87,7 +87,7 @@
         <ImageView
             android:id="@+id/postRecipeImage"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:contentDescription="image"
@@ -135,6 +135,23 @@
                 android:src="@drawable/icon_share"
                 android:contentDescription="share" />
         </LinearLayout>
+
+        <!-- Recipe instructions -->
+        <TextView
+            android:id="@+id/postRecipeInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Tutaj będą instrukcje krok po kroku..."
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp"
+            android:textAlignment="viewStart"
+            android:justificationMode="inter_word"
+            tools:ignore="HardcodedText" />
 
 
     </LinearLayout>

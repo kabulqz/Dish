@@ -58,16 +58,22 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout scrollableContainer = findViewById(R.id.scrollableContent);
         LayoutInflater inflater = LayoutInflater.from(this);
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             View postView = inflater.inflate(R.layout.post_item, scrollableContainer, false);
 
             TextView title = postView.findViewById(R.id.postRecipeTitle);
             TextView username = postView.findViewById(R.id.postUsername);
             TextView time = postView.findViewById(R.id.postTime);
 
+            ImageView recipeImage = postView.findViewById(R.id.postRecipeImage);
+            TextView recipeInstructions = postView.findViewById(R.id.postRecipeInstructions);
+
             title.setText("Makaron Carbonara " + (i + 1));
             username.setText("User " + (i + 1));
             time.setText((i + 1) + " hours ago");
+
+            recipeImage.setImageResource(R.drawable.example);
+            recipeInstructions.setText("instruction nr. " + (i + 1));
 
             scrollableContainer.addView(postView);
         }
