@@ -1,5 +1,10 @@
 package com.dish.app;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
@@ -10,7 +15,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -44,6 +48,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setNavButtons();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("testConnection");
+        ref.setValue("connected");
+
+        Toast.makeText(MainActivity.this, "Próba połączenia z Firebase...", Toast.LENGTH_SHORT).show();
+        ref.setValue("connected").addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(MainActivity.this, "Połączono z Firebase!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(MainActivity.this, "Błąd połączenia z Firebase!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.backgroundSpace), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
