@@ -23,10 +23,14 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -96,6 +100,57 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    public class AddRecipeActivity extends AppCompatActivity {
+
+        EditText titleInput, usernameInput, instructionsInput;
+        Button addButton;
+
+        @Override
+        protected void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.dialog_add_recipe);
+
+            titleInput = findViewById(R.id.inputTitle);
+            usernameInput = findViewById(R.id.inputUsername);
+            instructionsInput = findViewById(R.id.inputInstructions);
+            addButton = findViewById(R.id.addButton);
+
+            addButton.setOnClickListener(v -> {
+                String title = titleInput.getText().toString().trim();
+                String username = usernameInput.getText().toString().trim();
+                String instructions = instructionsInput.getText().toString().trim();
+
+                if (title.isEmpty() || username.isEmpty() || instructions.isEmpty()) {
+                    Toast.makeText(this, "Wypełnij wszystkie pola!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                uploadPostToFirebase(title, username, "teraz", instructions);
+            });
+        }
+
+        private void uploadPostToFirebase(String title, String username, String time, String instructions) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference postsRef = database.getReference("posts");
+
+            String postId = postsRef.push().getKey();
+            Post post = new Post(title, username, time, instructions);
+
+            if (postId != null) {
+                postsRef.child(postId).setValue(post).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Dodano przepis!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Błąd dodawania.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }
+    }
+
+
     private void applyVerticalInsets(View view, int extraMarginDp) {
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -108,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
     }
+
 
     private void setNavButtons() {
         View navigationBar = findViewById(R.id.navigationBar);
@@ -128,6 +184,12 @@ public class MainActivity extends AppCompatActivity {
             View button = findViewById(ids[0]);
 
             button .setOnClickListener(view -> {
+
+                if (ids[0] == R.id.addNewRecipeButton) {
+                    Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
+                    startActivity(intent);
+                }
+
                 button.animate()
                         .alpha(0.6f)
                         .scaleX(1.1f)
