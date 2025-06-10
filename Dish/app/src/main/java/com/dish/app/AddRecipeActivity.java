@@ -5,11 +5,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddRecipeActivity extends AppCompatActivity {
 
@@ -48,12 +52,25 @@ public class AddRecipeActivity extends AppCompatActivity {
         Post post = new Post(title, username, time, instructions);
 
         if (postId != null) {
-            postsRef.child(postId).setValue(post).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Toast.makeText(this, "Dodano przepis!", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(this, "Błąd dodawania.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddRecipeActivity.this, "Próba dodania przepisu...", Toast.LENGTH_SHORT).show();
+            DatabaseReference postRef = database.getReference("posts").child(postId);
+            postRef.setValue(post); // Zapisujemy dane
+
+            postRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                private DatabaseError error;
+
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        Toast.makeText(AddRecipeActivity.this, "Dodano przepis!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(AddRecipeActivity.this, "Błąd: nie udało się dodać przepisu.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(AddRecipeActivity.this, "Błąd: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
