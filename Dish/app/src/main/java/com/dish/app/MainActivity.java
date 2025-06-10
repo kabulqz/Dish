@@ -1,5 +1,6 @@
 package com.dish.app;
 
+import com.google.firebase.Firebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseError;
@@ -30,6 +31,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -53,18 +56,23 @@ public class MainActivity extends AppCompatActivity {
 
         setNavButtons();
 
+        Toast.makeText(MainActivity.this, "Próba połączenia z Firebase...", Toast.LENGTH_SHORT).show();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("testConnection");
         ref.setValue("connected");
 
-        Toast.makeText(MainActivity.this, "Próba połączenia z Firebase...", Toast.LENGTH_SHORT).show();
-        ref.setValue("connected").addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Toast.makeText(MainActivity.this, "Połączono z Firebase!", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(MainActivity.this, "Błąd połączenia z Firebase!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Błąd: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
         insertSampleRecipeIfNeeded();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.backgroundSpace), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -79,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout scrollableContainer = findViewById(R.id.scrollableContent);
         LayoutInflater inflater = LayoutInflater.from(this);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             View postView = inflater.inflate(R.layout.post_item, scrollableContainer, false);
 
             TextView title = postView.findViewById(R.id.postRecipeTitle);
