@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Błąd połączenia z Firebase!", Toast.LENGTH_SHORT).show();
             }
         });
-
+        insertSampleRecipeIfNeeded();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.backgroundSpace), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
@@ -161,6 +161,23 @@ public class MainActivity extends AppCompatActivity {
             v.setLayoutParams(params);
 
             return insets;
+        });
+
+    }
+
+    private void insertSampleRecipeIfNeeded() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference postsRef = database.getReference("posts");
+
+        postsRef.limitToFirst(1).get().addOnSuccessListener(snapshot -> {
+            if (!snapshot.hasChildren()) {
+                String postId = postsRef.push().getKey();
+                Post samplePost = new Post("Przykładowy Przepis", "admin", "teraz", "1. Weź makaron\n2. Gotuj 10 minut\n3. Gotowe!");
+
+                if (postId != null) {
+                    postsRef.child(postId).setValue(samplePost);
+                }
+            }
         });
     }
 
