@@ -15,4 +15,20 @@ public class Post {
         this.time = time;
         this.instructions = instructions;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getInstructions() {
+        return instructions;
+    }
 }

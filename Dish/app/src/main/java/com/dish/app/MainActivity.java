@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setNavButtons();
 
         Toast.makeText(MainActivity.this, "Próba połączenia z Firebase...", Toast.LENGTH_SHORT).show();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://dish-7d8f1-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference ref = database.getReference("testConnection");
         ref.setValue("connected");
 
