@@ -6,29 +6,15 @@ public class Post {
     public String username;
     public String time;
     public String instructions;
+    public long timestamp;
 
     public Post() {}
 
-    public Post(String title, String username, String time, String instructions) {
+    public Post(String title, String username, String time, String instructions, long timestamp) {
         this.title = title;
         this.username = username;
         this.time = time;
         this.instructions = instructions;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public String getInstructions() {
-        return instructions;
+        this.timestamp = timestamp;
     }
 }

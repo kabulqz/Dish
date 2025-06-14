@@ -45,16 +45,17 @@ public class AddRecipeActivity extends AppCompatActivity {
             }
 
             String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-            uploadPostToFirebase(title, username, currentTime, instructions);
+            long timestamp = System.currentTimeMillis();
+            uploadPostToFirebase(title, username, currentTime, instructions, timestamp);
         });
     }
 
-    private void uploadPostToFirebase(String title, String username, String time, String instructions) {
+    private void uploadPostToFirebase(String title, String username, String time, String instructions, long timestamp) {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://dish-7d8f1-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference postsRef = database.getReference("posts");
 
         String postId = postsRef.push().getKey();
-        Post post = new Post(title, username, time, instructions);
+        Post post = new Post(title, username, time, instructions, timestamp);
 
         if (postId != null) {
             Toast.makeText(AddRecipeActivity.this, "Próba dodania przepisu...", Toast.LENGTH_SHORT).show();

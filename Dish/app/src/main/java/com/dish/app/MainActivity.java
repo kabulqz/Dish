@@ -40,6 +40,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     int[][] containerAndIndicatorIds = {
             {R.id.homeButton, R.id.homeIndicator},
@@ -73,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        insertSampleRecipeIfNeeded();
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.backgroundSpace), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
 
@@ -85,29 +90,55 @@ public class MainActivity extends AppCompatActivity {
         });
         applyVerticalInsets(findViewById(R.id.navigationBar), 15);
 
-        LinearLayout scrollableContainer = findViewById(R.id.scrollableContent);
-        LayoutInflater inflater = LayoutInflater.from(this);
-        for (int i = 0; i < 4; i++) {
-            View postView = inflater.inflate(R.layout.post_item, scrollableContainer, false);
-
-            TextView title = postView.findViewById(R.id.postRecipeTitle);
-            TextView username = postView.findViewById(R.id.postUsername);
-            TextView time = postView.findViewById(R.id.postTime);
-
-            ImageView recipeImage = postView.findViewById(R.id.postRecipeImage);
-            TextView recipeInstructions = postView.findViewById(R.id.postRecipeInstructions);
-
-            title.setText("Makaron Carbonara " + (i + 1));
-            username.setText("User " + (i + 1));
-            time.setText((i + 1) + " hours ago");
-
-            recipeImage.setImageResource(R.drawable.example);
-            recipeInstructions.setText("instruction nr. " + (i + 1));
-
-            scrollableContainer.addView(postView);
-        }
+        loadPostsFromFirebase();
     }
 
+    private void loadPostsFromFirebase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://dish-7d8f1-default-rtdb.europe-west1.firebasedatabase.app");
+        DatabaseReference postsRef = database.getReference("posts");
+
+        LinearLayout scrollableContainer = findViewById(R.id.scrollableContent);
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                scrollableContainer.removeAllViews();
+                List<Post> postList = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                    Post post = postSnapshot.getValue(Post.class);
+                    if (post != null) postList.add(post);
+                }
+
+                Collections.sort(postList, Comparator.comparingLong(p -> p.timestamp)); // lub .reversed() jeśli od najnowszego
+                Collections.reverse(postList); // od najnowszego do najstarszego
+
+                for (Post post : postList) {
+                    View postView = inflater.inflate(R.layout.post_item, scrollableContainer, false);
+
+                    TextView title = postView.findViewById(R.id.postRecipeTitle);
+                    TextView username = postView.findViewById(R.id.postUsername);
+                    TextView time = postView.findViewById(R.id.postTime);
+                    ImageView recipeImage = postView.findViewById(R.id.postRecipeImage);
+                    TextView instructions = postView.findViewById(R.id.postRecipeInstructions);
+
+                    title.setText(post.title);
+                    username.setText(post.username);
+                    time.setText(post.time);
+                    instructions.setText(post.instructions);
+                    recipeImage.setImageResource(R.drawable.example);
+
+                    scrollableContainer.addView(postView);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MainActivity.this, "Błąd: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void applyVerticalInsets(View view, int extraMarginDp) {
         ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
@@ -123,22 +154,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void insertSampleRecipeIfNeeded() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference postsRef = database.getReference("posts");
-
-        postsRef.limitToFirst(1).get().addOnSuccessListener(snapshot -> {
-            if (!snapshot.hasChildren()) {
-                String postId = postsRef.push().getKey();
-                Post samplePost = new Post("Przykładowy Przepis", "admin", "teraz", "1. Weź makaron\n2. Gotuj 10 minut\n3. Gotowe!");
-
-                if (postId != null) {
-                    postsRef.child(postId).setValue(samplePost);
-                }
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPostsFromFirebase(); // zawsze gdy wracasz na ekran główny
     }
-
 
     private void setNavButtons() {
         View navigationBar = findViewById(R.id.navigationBar);
@@ -163,6 +183,10 @@ public class MainActivity extends AppCompatActivity {
                 if (ids[0] == R.id.addNewRecipeButton) {
                     Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
                     startActivity(intent);
+                }
+
+                if (ids[0] == R.id.homeButton) {
+                    loadPostsFromFirebase();
                 }
 
                 button.animate()
