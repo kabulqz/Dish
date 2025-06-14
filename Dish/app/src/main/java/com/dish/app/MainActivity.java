@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             {R.id.addNewRecipeButton, R.id.addNewRecipeIndicator},
             {R.id.profileButton, R.id.profileIndicator}
     };
+    private View homeButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        homeButton = findViewById(R.id.homeButton);
         setNavButtons();
 
         Toast.makeText(MainActivity.this, "Próba połączenia z Firebase...", Toast.LENGTH_SHORT).show();
@@ -157,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadPostsFromFirebase(); // zawsze gdy wracasz na ekran główny
+        if (homeButton != null) {
+            homeButton.performClick(); // simulate click to refresh posts
+        }
     }
 
     private void setNavButtons() {
