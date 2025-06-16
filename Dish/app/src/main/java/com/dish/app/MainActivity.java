@@ -9,6 +9,8 @@ import com.google.firebase.database.DataSnapshot;
 import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.RenderEffect;
 import android.graphics.Shader;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
         loadPostsFromFirebase();
     }
 
+    private Bitmap base64ToBitmap(String base64Str) {
+        byte[] decodedBytes = Base64.decode(base64Str, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+    }
+
     private void loadPostsFromFirebase() {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://dish-7d8f1-default-rtdb.europe-west1.firebasedatabase.app");
         DatabaseReference postsRef = database.getReference("posts");
@@ -129,7 +137,14 @@ public class MainActivity extends AppCompatActivity {
                     username.setText(post.username);
                     time.setText(post.time);
                     instructions.setText(post.instructions);
-                    recipeImage.setImageResource(R.drawable.example);
+
+                    if (post.imageBase64 != null && !post.imageBase64.isEmpty()) {
+                        Bitmap bitmap = base64ToBitmap(post.imageBase64);
+                        recipeImage.setImageBitmap(bitmap);
+                    }
+                    else {
+                        recipeImage.setImageResource(R.drawable.example);
+                    }
 
                     scrollableContainer.addView(postView);
                 }
