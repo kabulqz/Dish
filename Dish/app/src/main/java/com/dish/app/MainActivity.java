@@ -1,6 +1,7 @@
 package com.dish.app;
 
 import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
             {R.id.profileButton, R.id.profileIndicator}
     };
     private View homeButton;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             homeButton.performClick(); // simulate click to refresh posts
         }
     }
+
 
     private void setNavButtons() {
         View navigationBar = findViewById(R.id.navigationBar);

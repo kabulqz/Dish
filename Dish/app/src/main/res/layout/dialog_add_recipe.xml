@@ -36,4 +36,6 @@
         android:layout_height="wrap_content"
         android:text="Dodaj przepis"
         android:layout_marginTop="16dp" />
+
+
 </LinearLayout>

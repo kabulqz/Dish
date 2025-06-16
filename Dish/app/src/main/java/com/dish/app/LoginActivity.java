@@ -21,6 +21,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login); // twój layout
 
         mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
 
         usernameEditText = findViewById(R.id.usernameEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -32,31 +37,47 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        String email = usernameEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
+        String email = usernameEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Email i hasło są wymagane", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(this, "Zalogowano", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     } else {
-                        Toast.makeText(this, "Błąd logowania", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Błąd logowania: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     private void signUp() {
-        String email = usernameEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
+        String email = usernameEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
+
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Email i hasło są wymagane", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 6) {
+            Toast.makeText(this, "Hasło musi mieć co najmniej 6 znaków", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(this, "Utworzono konto", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, MainActivity.class));
+                        finish();
                     } else {
-                        Toast.makeText(this, "Błąd rejestracji", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Błąd rejestracji: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
