@@ -148,12 +148,16 @@ public class MainActivity extends AppCompatActivity {
                     time.setText(post.time);
                     instructions.setText(post.instructions);
 
-                    if (post.imageBase64 != null && !post.imageBase64.isEmpty()) {
-                        Bitmap bitmap = base64ToBitmap(post.imageBase64);
-                        recipeImage.setImageBitmap(bitmap);
-                    }
-                    else {
-                        recipeImage.setImageResource(R.drawable.example);
+                    if (post.imageBase64 != null && !post.imageBase64.trim().isEmpty()) {
+                        try {
+                            Bitmap bitmap = base64ToBitmap(post.imageBase64);
+                            recipeImage.setImageBitmap(bitmap);
+                            recipeImage.setVisibility(View.VISIBLE);
+                        } catch (Exception e) {
+                            recipeImage.setVisibility(View.GONE);
+                        }
+                    } else {
+                        recipeImage.setVisibility(View.GONE);
                     }
 
                     scrollableContainer.addView(postView);
