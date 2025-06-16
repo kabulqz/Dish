@@ -30,6 +30,21 @@
         android:layout_height="wrap_content"
         android:gravity="top" />
 
+    <ImageView
+        android:id="@+id/previewImage"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/selectImageButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wybierz zdjęcie"
+        android:layout_marginTop="8dp" />
+
     <Button
         android:id="@+id/addButton"
         android:layout_width="match_parent"
