@@ -218,6 +218,9 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, AddRecipeActivity.class);
                     startActivity(intent);
                 }
+                if (ids[0] == R.id.profileButton) {
+                    startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+                }
 
                 if (ids[0] == R.id.homeButton) {
                     loadPostsFromFirebase();
