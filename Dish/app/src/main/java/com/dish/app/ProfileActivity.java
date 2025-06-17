@@ -32,7 +32,7 @@ import java.util.List;
 
 // ProfileActivity.java
 public class ProfileActivity extends AppCompatActivity {
-    private TextView postsCountText;
+    private TextView postsCountText, profileEmailText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,15 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logoutUser());
+
         postsCountText = findViewById(R.id.profilePostsCount);
+        profileEmailText = findViewById(R.id.profileEmail);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null) {
+            profileEmailText.setText(user.getEmail());
+        }
+
         loadUserPosts();
     }
 
