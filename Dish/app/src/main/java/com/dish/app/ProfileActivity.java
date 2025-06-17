@@ -32,12 +32,15 @@ import java.util.List;
 
 // ProfileActivity.java
 public class ProfileActivity extends AppCompatActivity {
+    private TextView postsCountText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Button logoutButton = findViewById(R.id.logoutButton);
         logoutButton.setOnClickListener(v -> logoutUser());
+        postsCountText = findViewById(R.id.profilePostsCount);
         loadUserPosts();
     }
 
@@ -75,6 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 Collections.sort(userPosts, Comparator.comparingLong(p -> p.timestamp));
                 Collections.reverse(userPosts);
+                postsCountText.setText(userPosts.size() + " posts");
 
                 // Użyj tej samej metody co w MainActivity do wyświetlania postów
                 displayPosts(userPosts, scrollableContainer, inflater);
