@@ -44,7 +44,7 @@
         <!-- Username -->
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="360dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:boxBackgroundColor="@color/white"
@@ -65,7 +65,7 @@
 
         <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="360dp"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:boxBackgroundColor="@color/white"
